@@ -48,21 +48,23 @@ public class MongoDemoApplication implements ApplicationRunner {
 				.createTime(new Date())
 				.updateTime(new Date()).build();
 		Coffee saved = mongoTemplate.save(espresso);
-		log.info("Coffee {}", saved);
+		log.error("Coffee {}", saved);
 
-		List<Coffee> list = mongoTemplate.find(
-				Query.query(Criteria.where("name").is("espresso")), Coffee.class);
-		log.info("Find {} Coffee", list.size());
-		list.forEach(c -> log.info("Coffee {}", c));
+		List<Coffee> list = mongoTemplate.findAll(
+				Coffee.class);
+		log.error("Find {} Coffee", list.size());
+		list.forEach(c -> log.error("Coffee {}", c));
 
 		Thread.sleep(1000); // 为了看更新时间
 		UpdateResult result = mongoTemplate.updateFirst(query(where("name").is("espresso")),
 				new Update().set("price", Money.ofMajor(CurrencyUnit.of("CNY"), 30))
 						.currentDate("updateTime"),
 				Coffee.class);
-		log.info("Update Result: {}", result.getModifiedCount());
+		log.error("Update Result: {}", result.getModifiedCount());
 		Coffee updateOne = mongoTemplate.findById(saved.getId(), Coffee.class);
-		log.info("Update Result: {}", updateOne);
+		log.error("Update Result: {}", updateOne);
+
+
 
 		mongoTemplate.remove(updateOne);
 	}

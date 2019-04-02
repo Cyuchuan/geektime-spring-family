@@ -64,6 +64,8 @@ public class SpringBucksApplication implements ApplicationRunner {
 			String price = jedis.hget("springbucks-menu", "espresso");
 			log.info("espresso - {}",
 					Money.ofMinor(CurrencyUnit.of("CNY"), Long.parseLong(price)));
+
+			jedis.del("springbucks");
 		}
 	}
 }
